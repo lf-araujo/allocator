@@ -1,0 +1,1348 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"excess",
+				"excessH"
+			],
+			[
+				"Lto",
+				"LtoHigh"
+			],
+			[
+				"profit",
+				"profitHigh"
+			],
+			[
+				"profi",
+				"profitLow"
+			],
+			[
+				"differ",
+				"differenceLow"
+			],
+			[
+				"compleme",
+				"complementHigh"
+			],
+			[
+				"comple",
+				"complementLow"
+			],
+			[
+				"in",
+				"invest"
+			],
+			[
+				"last",
+				"lastentry"
+			],
+			[
+				"sem",
+				"semWellCases"
+			],
+			[
+				"Phil",
+				"PhilSci"
+			],
+			[
+				"FIL",
+				"FILFILES"
+			],
+			[
+				"latex",
+				"latex-engine"
+			],
+			[
+				"pandoc",
+				"pandoc-citeproc"
+			],
+			[
+				"late",
+				"latex-engine"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "allocator.R",
+			"settings":
+			{
+				"buffer_size": 7217,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 512,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 10 files for \"investLow\"\n\n/home/luis/Dropbox/Documentos/Coding/R/finances/allocator.R:\n  140  \tinvest<-userInput(\"Finally, how much you have to save today: \")\n  141  \t\n  142: \tinvestLow = lowToday-(investedLow+lastentry$low)\n  143  \tinvestHigh = highToday-(investedHigh+lastentry$high)\n  144: \tprofit = investLow+investHigh\n  145  \t\n  146  \tif(expenses>savings){\n  147  \t  cat(\"The emergency pool is outdated. \\n Deposit \",expenses-savings, \"into the emergency pool.\")\n  148: \t  if(expenses-savings<investHigh+investLow){\n  149  \t  \tprofit = profit - (expenses-savings)\n  150  \t    investHigh = profit * investPercent/100\n  151: \t    investLow = profit - investHigh\n  152  \t  }\n  153  \t} else {\n  ...\n  165  \n  166  \tinvestHigh = profit * investPercent/100\n  167: \tinvestLow = profit * (100-investPercent)/100\n  168  \n  169  \t\t  \n  170: \tcat(\"Invest \", investLow+complementLow, \"in your low risk pool.\\n\" )\n  171  \tcat(\"Invest \", investHigh+complementHigh, \"in your high risk pool. \\n\" )\n  172  \tcat(\"Your data has been saved to finances.csv in this directory. Goodbye! \\n\")\n\n6 matches in 1 file\n",
+			"settings":
+			{
+				"buffer_size": 1106,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "finances.csv",
+			"settings":
+			{
+				"buffer_size": 293,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\nR version 3.4.1 (2017-06-30) -- \"Single Candle\"\nCopyright (C) 2017 The R Foundation for Statistical Computing\nPlatform: x86_64-pc-linux-gnu (64-bit)\n\nR é um software livre e vem sem GARANTIA ALGUMA.\nVocê pode redistribuí-lo sob certas circunstâncias.\nDigite 'license()' ou 'licence()' para detalhes de distribuição.\n\nR é um projeto colaborativo com muitos contribuidores.\nDigite 'contributors()' para obter mais informações e\n'citation()' para saber como citar o R ou pacotes do R em publicações.\n\nDigite 'demo()' para demonstrações, 'help()' para o sistema on-line de ajuda,\nou 'help.start()' para abrir o sistema de ajuda em HTML no seu navegador.\nDigite 'q()' para sair do R.\n\n> \n> 'Allocator v0.1\n+ \r<ial advice and user should use at his with own risk\n+ \r<. The second pool is the high risk investiment pool\n+ \r<he third pool (low risk) consists of the remainder.\n+ \r<take the opportunity of dips in the high risk pool.\n+ \r< high or low risk is entirely at user s discretion.\n+ \n+ usage: \n+  allocator.R [-L <low>] [-H <high>]\n+ \n+ options:\n+  -h --help         Shows this screen\n+  -L --low <low>         Passes low risk investiment\n+  -H --high <high>        Passes high risk investiment\n+ \n+ ' -> doc\n> \n> \n> #' Function to load dependencies, it is part of the sempsychiatry package\n> #' https://github.com/lf-araujo/sempsychiatry\n> \r<o load all packages required to SEM data analysis. \n> \r<s as arguments and if these are not installed, they\n> \r<. If they are in the system, they are not updated. \n> \r<that updating packages can cause incompatibilities \n> \r<packages are quickly updated by their owners. This \n> \r<intain the base installation as stable as possible.\n> #' @param Conjunction of packages to check\n> #' @keywords packages installation\n> #' @export\n> dependencies <- function(dep){\n+   for (i in dep){\n+     if (i %in% installed.packages()){\n+       library(i, character.only=TRUE)\n+     } else {\n+       install.packages(i)\n+       library(i, character.only=TRUE)\n+     }\n+   }\n+ }\n> \n> dependencies(c(\"data.table\", \"docopt\"))\ndata.table 1.10.4\n  The fastest way to learn (by data.table authors): https://www.datacamp.com/courses/data-analysis-the-data-table-way\n  Documentation: ?data.table, example(data.table) and browseVignettes(\"data.table\")\n  Release notes, videos and slides: http://r-datatable.com\n> \n> opts <- docopt(doc)\n> \n> # This is a workaround that makes the script find itself in the file\n> # system\n> system(\"pwd=`pwd`; $pwd 2> dummyfile.txt\")\n> dir <- fread(\"dummyfile.txt\")\n> n<- colnames(dir)[2]\n> n2 <- substr(n, 1, nchar(n)-1)\n> setwd(n2)\n> \n> # Utility to get users input\n> userInput<-function(question) {\n+   n = 0\n+   cat(question, \" \")\n+   n<- readLines(con=\"stdin\", 1)\n+   return(as.numeric(n))\n+ }\n> \n> # Quick insertion of investiments via command line\n> if (isTRUE(opts$lr & opts$hr)){\n+ \u0007data<-read.csv(\"./finances.csv\",stringsAsFactors = FALSE)\n+   \u0007lastentry<-tail(data, n=1)\n+ \n+     expenses = lastentry$expenses\n+     investPercent = lastentry$investPercent\n+ \n+  \u0007\r<e=as.character(Sys.Date()),lastentry$investPercent,\n+  \u0007\u0007lastentry$expenses, lastentry$savings, low= lastentry$low+opts$low,\n+  \u0007\u0007high=lastentry$high+opts$high, lastentry$objective)\n+   \u0007data<-rbind(data,dataplus)\n+ \u0007write.csv(data,  file=\"./finances.csv\", row.names = F)\n+ \u0007cat(\"Your new investiments were recorded\")\n+ \u0007exit()\n+ } else{\n+ \u0007if(isTRUE(opts$low | opts$high)){\n+ \u0007\u0007\r<igh investiments if you want them to be recorded.\")\n+ \u0007\u0007exit()\n+ \u0007}\n+ }\n> isTRUE(opts$low | opts$high)\n[1] FALSE\n> if(isTRUE(opts$low) | isTRUE(opts$high)){\n+ \r<igh investiments if you want them to be recorded.\")\n+ \u0007\u0007exit()\n+ \u0007}\n> str(opts)\nList of 6\n $ --help: logi FALSE\n $ --low : NULL\n $ --high: NULL\n $ help  : logi FALSE\n $ low   : NULL\n $ high  : NULL\n - attr(*, \"class\")= chr [1:2] \"docopt\" \"list\"\n> ",
+			"settings":
+			{
+				"buffer_size": 3815,
+				"line_ending": "Unix",
+				"name": "*REPL* [r]",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "Packages/Makefile/Make.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				]
+			],
+			[
+				"Packages/Makefile/Make.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "lint",
+		"selected_items":
+		[
+			[
+				"lint",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"linter",
+				"SublimeLinter: Disable Linting"
+			],
+			[
+				"next",
+				"SublimeLinter: Next Error"
+			],
+			[
+				"commen",
+				"Toggle Comment"
+			],
+			[
+				"repl r",
+				"SublimeREPL: R"
+			],
+			[
+				"clos",
+				"Project: Close"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"pand",
+				"Pandoc"
+			],
+			[
+				"pandoc",
+				"Pandoc"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"pus",
+				"Git: Push"
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"add",
+				"Git: Add All"
+			],
+			[
+				"branch",
+				"Git: New Branch"
+			],
+			[
+				"diff",
+				"Git: Diff Current File (Ignore Whitespace)"
+			],
+			[
+				"search",
+				"Evernote: Search Note"
+			],
+			[
+				"chec",
+				"LanguageTool: Check Text (Local Server)"
+			],
+			[
+				"langua",
+				"LanguageTool: Change Language"
+			],
+			[
+				"che",
+				"LanguageTool: Check Text (Local Server)"
+			],
+			[
+				"change",
+				"LanguageTool: Change Language"
+			],
+			[
+				"check",
+				"LanguageTool: Check Text (Local Server)"
+			],
+			[
+				"lang",
+				"LanguageTool: Change Language"
+			],
+			[
+				"language",
+				"LanguageTool: Change Language"
+			],
+			[
+				"langu",
+				"LanguageTool: Change Language"
+			],
+			[
+				"language tool",
+				"LanguageTool: Activate Rule"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"close",
+				"Project: Close"
+			],
+			[
+				"comment",
+				"Toggle Comment"
+			],
+			[
+				"up",
+				"Evernote: Update Evernote Note"
+			],
+			[
+				"updat",
+				"Evernote: Update Evernote Note"
+			],
+			[
+				"sear",
+				"Evernote: Search Note"
+			],
+			[
+				"searc",
+				"Evernote: Search Note"
+			],
+			[
+				"remove ",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pando",
+				"Pandoc"
+			],
+			[
+				"upda",
+				"Evernote: Update Evernote Note"
+			],
+			[
+				"sublimerge",
+				"Sublimerge: Compare to View..."
+			],
+			[
+				"update",
+				"Evernote: Update Evernote Note"
+			],
+			[
+				"send as ne",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"evernote",
+				"Evernote Settings: User"
+			],
+			[
+				"as new",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"new",
+				"Evernote: New empty note"
+			],
+			[
+				"repr",
+				"SublimeREPL: R"
+			],
+			[
+				"git ign",
+				"Git: Update Project Ignored Files"
+			],
+			[
+				"git igno",
+				"Git: Update Project Ignored Files"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"CHECK",
+				"LanguageTool: Check Text (Local Server)"
+			],
+			[
+				"LANGUA",
+				"LanguageTool: Change Language"
+			],
+			[
+				"lan",
+				"LanguageTool: Check Text"
+			],
+			[
+				"distractionless: Documentation ",
+				"distractionless: Documentation (English)"
+			],
+			[
+				"upd",
+				"Evernote: Update Evernote Note"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"send",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"new e",
+				"Evernote: New empty note"
+			],
+			[
+				"men",
+				"View: Toggle Menu"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"git ",
+				"Git: Push"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git pu",
+				"Git: Push"
+			],
+			[
+				"side",
+				"View: Toggle Side Bar"
+			],
+			[
+				"side bar",
+				"View: Toggle Side Bar"
+			],
+			[
+				"toggle ",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"clo",
+				"Convert Case: Lower Case"
+			],
+			[
+				"toggl",
+				"View: Toggle Side Bar"
+			],
+			[
+				"tabs",
+				"View: Toggle Tabs"
+			],
+			[
+				"start",
+				"LanguageTool: Start Local Server"
+			],
+			[
+				"Check",
+				"LanguageTool: Check Text (Local Server)"
+			],
+			[
+				"start loca",
+				"LanguageTool: Start Local Server"
+			],
+			[
+				"new note",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"dele",
+				"Evernote: Delete Note"
+			],
+			[
+				"languagetool",
+				"LanguageTool: Clear Problems"
+			],
+			[
+				"send as",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"clear",
+				"LanguageTool: Clear Problems"
+			],
+			[
+				"chang",
+				"LanguageTool: Change Language"
+			],
+			[
+				"send a",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"toggle",
+				"View: Toggle Menu"
+			],
+			[
+				"send ",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"new no",
+				"Evernote: New empty note"
+			],
+			[
+				"",
+				"Evernote: Send to Evernote as new note"
+			],
+			[
+				"search ",
+				"Evernote: Search Note"
+			],
+			[
+				"delet",
+				"Evernote: Delete Note"
+			],
+			[
+				"delete",
+				"Evernote: Delete Note"
+			],
+			[
+				"\\",
+				"Snippet: #!/usr/bin/env"
+			],
+			[
+				"github",
+				"GitHub: Blame (master)"
+			],
+			[
+				"docx",
+				"Pandoc: Convert a Pandoc file to DocX"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"pdf",
+				"Pandoc: Convert a Pandoc file to PDF"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"haskel",
+				"Set Syntax: Haskell"
+			],
+			[
+				"languag",
+				"LanguageTool: Apply Suggested Correction(s)"
+			],
+			[
+				"mardk",
+				"Set Syntax: Markdown"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"pandoc pdf",
+				"Pandoc: Convert a Pandoc file to PDF"
+			],
+			[
+				"mar",
+				"Set Syntax: Markdown"
+			],
+			[
+				"mark",
+				"Set Syntax: Markdown + Critic"
+			],
+			[
+				"crit",
+				"Set Syntax: Critic"
+			],
+			[
+				"critic",
+				"Set Syntax: Markdown + Critic"
+			],
+			[
+				"criti",
+				"Set Syntax: Critic"
+			],
+			[
+				"markdwo",
+				"Set Syntax: Markdown"
+			],
+			[
+				"cri",
+				"Set Syntax: Critic"
+			],
+			[
+				"install p",
+				"Package Control: Install Package"
+			],
+			[
+				"cite",
+				"Citer: Search"
+			],
+			[
+				"Critic",
+				"Set Syntax: Critic"
+			],
+			[
+				"ever",
+				"Evernote Settings: User"
+			]
+		],
+		"width": 470.0
+	},
+	"console":
+	{
+		"height": 117.0,
+		"history":
+		[
+			"sys.version_info",
+			"sys.version",
+			"import sys",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/luis/Dropbox/Documentos/Coding/R/allocator"
+	],
+	"file_history":
+	[
+		"/home/luis/Dropbox/Documentos/Coding/R/allocator/teste.R",
+		"/home/luis/Dropbox/Documentos/Coding/R/finances/dummyfile.txt",
+		"/home/luis/Dropbox/Documentos/Coding/R/finances/allocator.R",
+		"/home/luis/Dropbox/Documentos/Coding/R/finances/teste.R",
+		"/home/luis/Dropbox/Documentos/Coding/R/finances/finances.csv",
+		"/home/luis/Dropbox/Documentos/Coding/R/finances/finances.R",
+		"/home/luis/Dropbox/Documentos/Coding/bash/albert-translate/translate.sh",
+		"/usr/local/bin/Translate",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/00_metadata.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/09_conclusion.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/08_Psychiatry_As_Special.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/Makefile",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/02_methods.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/05_DTI_moderation.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/03_mediation.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/01_intro.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos/THESIS/source/06_FEP_moderates.md",
+		"/home/luis/Dropbox/apps/todotxttdi/todo.txt",
+		"/home/luis/Dropbox/apps/todotxttdi/todo (Cópia em conflito de Luís Araújo 2017-08-01).txt",
+		"/C/Users/554UU-lfernado/Dropbox/Apps/todotxttdi/todo.txt",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/09_conclusion.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/output/comments-to-revise.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/output/pdf.log",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/03_mediation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/04_NUSDAST.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/06_FEP_moderates.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/05_DTI_moderation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/01_intro.md",
+		"/C/Users/554UU-lfernado/Dropbox/C9v2.md",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/Pandoc.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/C6v2.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/Makefile",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/06_mediation.md",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/CiteBibtex.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/05_NUSDAST.md",
+		"/C/Users/554UU-lfernado/Dropbox/C5.md",
+		"/C/Users/554UU-lfernado/Dropbox/C5 - Genetic susceptibility.docx",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/output/Pandoquer.tex",
+		"/home/luis/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/00_metadata.md",
+		"/home/luis/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/09_NUSDAST.md",
+		"/home/luis/Dropbox/Documentos/Shared-w-Jacyra/Pandoquer/source/05_intro.md",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/pandoc.log",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/output/Comments to revise.md",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/Makefile",
+		"/home/luis/Dropbox/C5.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/05_intro.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/08_DTI_moderation.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/05_intro.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/13_conclusion.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/12_Psychiatry_As_Special.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/09_NUSDAST.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/00_metadata.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/10_mediation.md",
+		"/home/luis/Downloads/Lynda - Swift 3 Essential Training/Exercice Files/Ex_Files_Swift3_EssT_Basics/Exercise Files/Ch01/01_02_finished.playground/Contents.swift",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/06_methods.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/.Makefile",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/13_conclusion.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/12_Psychiatry_As_Special.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/14_appendix.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/07_FEP_moderates.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/11_RDoC_shift.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/10_mediation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/09_NUSDAST.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/08_DTI_moderation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/06_methods.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/Makefile",
+		"/C/Users/554UU-lfernado/Downloads/cite.bib",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/style/acronyms.py",
+		"/C/Users/554UU-lfernado/Downloads/LanguageTool-3.8/README.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/.gitignore",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/pandoc.log",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/00_metadata.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/source/00_metadata.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/15_references.md",
+		"/home/luis/.texlive/texmf-config/web2c/updmap.cfg",
+		"/home/luis/.cache/.fr-kU3Xu5/thesis/titlepage.tex",
+		"/tmp/ricardo/source/cv.md",
+		"/home/luis/.cache/.fr-HC8sNj/thesis/mypreamble.sty",
+		"/home/luis/texmf/xcharter/README",
+		"/home/luis/texmf/fdsymbol/README",
+		"/home/luis/texmf/README",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/00_metadata.md",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/style/template.tex",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/mydiss.cls",
+		"/home/luis/.cache/.fr-Dvgcw4/mdsymbol/README",
+		"/home/luis/.cache/.fr-nOMf5Y/fdsymbol/README",
+		"/home/luis/.cache/.fr-TZ9tv5/thesis/toc.tex",
+		"/home/luis/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/10_NUSDAST.md",
+		"/C/Users/554UU-~1/AppData/Local/Temp/Rar$DRa0.373/mediation statistics COGNITION INSTEAD OF SCH.output",
+		"/C/Users/554UU-~1/AppData/Local/Temp/Rar$DRa0.095/AULA Progress report meeting 2017/source/SEM.md",
+		"/C/Users/554UU-~1/AppData/Local/Temp/Rar$DRa0.334/mediation statistics COGNITION INSTEAD OF SCH.output",
+		"/C/Users/554UU-~1/AppData/Local/Temp/Rar$DRa0.162/27-06-2017 mediation model with genotypes.R",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/NUSDAST/output/stats para modelo com fit bom, mas sem significancia estatistica.txt",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/NUSDAST/THESIS mediation model with genotypes.R",
+		"/C/Users/554UU-~1/AppData/Local/Temp/Rar$DRa0.901/AULA Progress report meeting 2017/source/SEM.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/12_conclusion.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/THESIS/pandoc.log",
+		"/home/luis/Dropbox/Documentos/Coding/bash/embed text to pdf/source/embed.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Doutorado/Meetings/Meeting may 1/Stats report - confirmation.Rmd",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/pandoc.log",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/style/.template.tex",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/.01_frontmatter.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/Makefile",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/style/template.tex",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/07_FEP_moderates.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/11_Psychiatry_As_Special.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/05_intro.md",
+		"/home/luis/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Thesis/source/01_frontmatter.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/POSTDOC Project/source/Multilevel genetic data.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/11_Psychiatry_As_Special.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/08_mediation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/01_frontmatter.md",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/QuickMail.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/Gmail/QuickMail.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/09_DTI_moderation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/output/Comments to revise.md",
+		"/C/Users/554UU-lfernado/Downloads/DTI-moderation.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/ARTIGO DTI-moderation/DTI-moderation.md",
+		"/C/Users/554UU-lfernado/Downloads/mediationthesis.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/ARTIGO neuroimagem estrutural QI moderation/2016-01-04 Submission Psychiatric Research - Neuroimaging/Review answer/tothesis.md",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/ARTIGO neuroimagem estrutural QI moderation/2016-01-04 Submission Psychiatric Research - Neuroimaging/Review answer/Reviewed Manuscript - yellow highlight.docx",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/Citer.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/Evernote/Evernote.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/Evernote.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/CiteBibtex/CiteBibtex.sublime-settings",
+		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/library.bib",
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/distraction_free_window.sublime-settings",
+		"/home/luis/Downloads/Telegram Desktop/thesis.md"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 88.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"str(",
+			"investLow",
+			"investHigh",
+			"investLow",
+			"epub",
+			"Kline (2014) suggests a ratio of 10-20",
+			"ANOVA tests Table 5.1",
+			"ANOVA tests Table 5.1.",
+			"verbal score (0.829)",
+			"loaded into the verbal score",
+			"These were initially proposed and tested by",
+			"recently proposed assumptions,",
+			"Kline’s",
+			"<.001",
+			"Barrett",
+			"Aims",
+			"AIMS",
+			"p-square",
+			"non-significant p-square",
+			"non significant p-square",
+			"A. ",
+			"Chapter",
+			"In the sense",
+			"specially",
+			"QQplot",
+			"qqplot",
+			"The modification indices test is part of the lavaan package.",
+			"APA",
+			"acro",
+			"Fractional Anisotropy",
+			"[FA](acro \"factor",
+			"realisability",
+			"octop",
+			"octopus",
+			"Korkmaz2014",
+			"Bentall2004",
+			"Aims",
+			"Appendi",
+			"the neural underpinnings",
+			"Furthermore, there is arguably no way of analysing emergent properties with modern statistical techniques.",
+			"solely",
+			"FEP",
+			"First episode",
+			"designs",
+			"modifies the strength of the relationship",
+			"the with",
+			"RDoC",
+			"[TALoNS](acro \"Transiently Assembled Local Neural Subsystems\")",
+			"Notabli",
+			"appendix",
+			"line 8",
+			"appendix",
+			"sql",
+			"model specific",
+			"Appendix",
+			"{-}",
+			"no cut-offs",
+			"TO",
+			"Time from Onset",
+			"Time from onset",
+			"Finch and French",
+			"Finch and French (2015)",
+			"Level of Education",
+			"Brick",
+			".* ",
+			"as ci.lower and ci.upper",
+			"conficence intervals",
+			"Kay1987",
+			"NUSDAST",
+			"penetra",
+			"Kline",
+			"@Kline2015b",
+			"[@Kline2015b]",
+			"[@Kline2015]",
+			"[@Kline]",
+			"@Kline",
+			"Kline",
+			"pandoc",
+			"39",
+			"The diagram",
+			"%",
+			"sectopm",
+			"chapter",
+			"Brick",
+			"PassOptionsToPackage",
+			"/geometr",
+			"geometr\n",
+			"Wasshington",
+			"{@",
+			"{Chapter",
+			"vfill",
+			"babel",
+			"acro",
+			"network",
+			"Anderson",
+			"model-based",
+			"factor analysis",
+			"Reductionism is not",
+			"functionalism",
+			"older paper",
+			"frequência",
+			"The",
+			"logical behaviourists",
+			"aniston",
+			"cognitive sciences",
+			"Cognitive sciences",
+			"modeling",
+			"comment",
+			"comment-start",
+			"..",
+			"&--",
+			"&[0-9]",
+			"Figure 2",
+			"table 1",
+			"Jung",
+			"{@sec",
+			"variance",
+			"\"reu",
+			"We",
+			"we",
+			"Economist",
+			"communic",
+			"an attem",
+			"This proj",
+			"Figure",
+			"121",
+			"Table",
+			"table"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"profitHigh",
+			"profitLow",
+			"QQ-plot",
+			"realizability",
+			"@sec:appendix",
+			" ",
+			".",
+			"&--0.",
+			"&0.",
+			"0.",
+			"cognition",
+			"*ng*",
+			" "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "allocator.R",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7217,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1859,
+								1859
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "r"
+							},
+							"rulers":
+							[
+								80
+							],
+							"syntax": "Packages/R/R.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1224.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": ".gitignore",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 512,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1106,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										186,
+										195
+									],
+									[
+										313,
+										322
+									],
+									[
+										520,
+										529
+									],
+									[
+										644,
+										653
+									],
+									[
+										775,
+										784
+									],
+									[
+										863,
+										872
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "finances.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 293,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3815,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2783,
+								2783
+							]
+						],
+						"settings":
+						{
+							"auto_complete": true,
+							"auto_indent": false,
+							"detect_indentation": false,
+							"gutter": false,
+							"history_arrows": true,
+							"indent_subsequent_lines": false,
+							"line_numbers": false,
+							"repl": true,
+							"repl_external_id": "r",
+							"repl_id": "84eec876ed9b48f9a45b21e4d2deff1a",
+							"repl_restart_args":
+							{
+								"additional_scopes":
+								[
+									"tex.latex.knitr"
+								],
+								"cmd":
+								{
+									"linux":
+									[
+										"R",
+										"--interactive",
+										"--no-readline"
+									],
+									"osx":
+									[
+										"R",
+										"--interactive",
+										"--no-readline"
+									],
+									"windows":
+									[
+										"Rterm.exe",
+										"--ess",
+										"--encoding=$win_cmd_encoding"
+									]
+								},
+								"cmd_postfix": "\n",
+								"cwd": "$file_path",
+								"encoding":
+								{
+									"linux": "utf8",
+									"osx": "utf8",
+									"windows": "$win_cmd_encoding"
+								},
+								"extend_env":
+								{
+									"linux":
+									{
+										"PATH": "{PATH}:/usr/local/bin"
+									},
+									"osx":
+									{
+										"PATH": "{PATH}:/usr/local/bin"
+									},
+									"windows":
+									{
+									}
+								},
+								"external_id": "r",
+								"soft_quit": "\nquit(save=\"no\")\n",
+								"suppress_echo":
+								{
+									"linux": true,
+									"osx": true,
+									"windows": false
+								},
+								"syntax": "Packages/R/R Console.tmLanguage",
+								"type": "subprocess"
+							},
+							"repl_sublime2": false,
+							"smart_indent": false,
+							"spell_check": false,
+							"syntax": "Packages/R/R Console.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1939.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 32.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.623333333333,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 138.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 134.0
+	},
+	"output.languagetool":
+	{
+		"height": 94.0
+	},
+	"pinned_build_system": "Packages/Makefile/Make.sublime-build",
+	"project": "allocator.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "fina",
+		"selected_items":
+		[
+			[
+				"fina",
+				"~/Dropbox/Documentos/Shared-w-Jacyra/final-seminar.sublime-workspace"
+			],
+			[
+				"wel",
+				"~/Dropbox/Documentos/Psiquiatria/Projetos em andamento/MEDIATION Structural imaging and cognition/Analysis/welbeingMediation.sublime-project"
+			],
+			[
+				"mig",
+				"~/Dropbox/Documentos/Coding/bash/mighty_make/mightymake.sublime-project"
+			],
+			[
+				"",
+				"~/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/2017 progress meeting.sublime-workspace"
+			],
+			[
+				"blo",
+				"~/Documentos/lf-araujo.github.io/blog.sublime-project"
+			],
+			[
+				"mediat",
+				"~/Dropbox/Documentos/Psiquiatria/Projetos em andamento/Structural imaging and cognition MEDIATION MODEL/mediation.sublime-workspace"
+			],
+			[
+				"re",
+				"/media/budgie-remix/887A3EFA7A3EE49A/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/ARTIGO neuroimagem estrutural QI moderation/outputreview/answer-review.sublime-workspace"
+			],
+			[
+				"blog",
+				"~/Documentos/lf-araujo.github.io/blog.sublime-project"
+			],
+			[
+				"migh",
+				"/media/budgie-remix/887A3EFA7A3EE49A/Users/554UU-lfernado/Dropbox/Documentos/Coding/bash/mighty_make/mightymake.sublime-project"
+			],
+			[
+				"cv",
+				"~/Dropbox/Documentos/Psiquiatria/Curriculum/markdown-cv/cv.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"dfw_mode": false,
+		"last_automatic_layout":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		]
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 160.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 2
+	}
+}

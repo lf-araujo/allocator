@@ -1,0 +1,1 @@
+sh: 1: /home/luis/Dropbox/Documentos/Coding/R/allocator: Permission denied
