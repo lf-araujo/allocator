@@ -2,7 +2,7 @@
 
 This is an example on how to build a command line tool in R. It serves as example on how to build a program that expects user input and perform calculations with these.
 
-The program is a totally functional passive allocation program, the user defines his risk profile and the age when s/he expects to stop moving investiments around. The tool then calculates how much to allocate into each of the pools of investments.
+The program is a totally functional passive allocation tool in which the user defines his risk profile and the age when s/he expects to stop moving investiments around. The tool then calculates how much to allocate into each of the pools of investments.
 
 This is an example of R programming, it is distributed "as is", without warranty. Do not use it if you don't understand the code and the principle of passive allocation. 
 
