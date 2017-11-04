@@ -8,6 +8,7 @@ This is an example of R programming, it is distributed "as is", without warranty
 
 ## Use
 
+```
 Passive allocation investiment tool. It departs from three assumptions:
   1. the age when one whants to stop investing (should take life expectancy
     in your country into consideration);
@@ -32,3 +33,4 @@ usage:
 
 options:
  -h --help         Shows this screen
+```
