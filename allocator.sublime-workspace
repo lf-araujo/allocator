@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"invest",
+				"investiments"
+			],
+			[
+				"user",
+				"userinput"
+			],
+			[
 				"excess",
 				"excessH"
 			],
@@ -71,9 +79,19 @@
 			"file": "allocator.R",
 			"settings":
 			{
-				"buffer_size": 7217,
+				"buffer_size": 7587,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "readme.md",
+			"settings":
+			{
+				"buffer_size": 1807,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "# Allocator v0.9.1"
 			}
 		},
 		{
@@ -82,35 +100,6 @@
 			{
 				"buffer_size": 512,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Searching 10 files for \"investLow\"\n\n/home/luis/Dropbox/Documentos/Coding/R/finances/allocator.R:\n  140  \tinvest<-userInput(\"Finally, how much you have to save today: \")\n  141  \t\n  142: \tinvestLow = lowToday-(investedLow+lastentry$low)\n  143  \tinvestHigh = highToday-(investedHigh+lastentry$high)\n  144: \tprofit = investLow+investHigh\n  145  \t\n  146  \tif(expenses>savings){\n  147  \t  cat(\"The emergency pool is outdated. \\n Deposit \",expenses-savings, \"into the emergency pool.\")\n  148: \t  if(expenses-savings<investHigh+investLow){\n  149  \t  \tprofit = profit - (expenses-savings)\n  150  \t    investHigh = profit * investPercent/100\n  151: \t    investLow = profit - investHigh\n  152  \t  }\n  153  \t} else {\n  ...\n  165  \n  166  \tinvestHigh = profit * investPercent/100\n  167: \tinvestLow = profit * (100-investPercent)/100\n  168  \n  169  \t\t  \n  170: \tcat(\"Invest \", investLow+complementLow, \"in your low risk pool.\\n\" )\n  171  \tcat(\"Invest \", investHigh+complementHigh, \"in your high risk pool. \\n\" )\n  172  \tcat(\"Your data has been saved to finances.csv in this directory. Goodbye! \\n\")\n\n6 matches in 1 file\n",
-			"settings":
-			{
-				"buffer_size": 1106,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "finances.csv",
-			"settings":
-			{
-				"buffer_size": 293,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "\nR version 3.4.1 (2017-06-30) -- \"Single Candle\"\nCopyright (C) 2017 The R Foundation for Statistical Computing\nPlatform: x86_64-pc-linux-gnu (64-bit)\n\nR é um software livre e vem sem GARANTIA ALGUMA.\nVocê pode redistribuí-lo sob certas circunstâncias.\nDigite 'license()' ou 'licence()' para detalhes de distribuição.\n\nR é um projeto colaborativo com muitos contribuidores.\nDigite 'contributors()' para obter mais informações e\n'citation()' para saber como citar o R ou pacotes do R em publicações.\n\nDigite 'demo()' para demonstrações, 'help()' para o sistema on-line de ajuda,\nou 'help.start()' para abrir o sistema de ajuda em HTML no seu navegador.\nDigite 'q()' para sair do R.\n\n> \n> 'Allocator v0.1\n+ \r<ial advice and user should use at his with own risk\n+ \r<. The second pool is the high risk investiment pool\n+ \r<he third pool (low risk) consists of the remainder.\n+ \r<take the opportunity of dips in the high risk pool.\n+ \r< high or low risk is entirely at user s discretion.\n+ \n+ usage: \n+  allocator.R [-L <low>] [-H <high>]\n+ \n+ options:\n+  -h --help         Shows this screen\n+  -L --low <low>         Passes low risk investiment\n+  -H --high <high>        Passes high risk investiment\n+ \n+ ' -> doc\n> \n> \n> #' Function to load dependencies, it is part of the sempsychiatry package\n> #' https://github.com/lf-araujo/sempsychiatry\n> \r<o load all packages required to SEM data analysis. \n> \r<s as arguments and if these are not installed, they\n> \r<. If they are in the system, they are not updated. \n> \r<that updating packages can cause incompatibilities \n> \r<packages are quickly updated by their owners. This \n> \r<intain the base installation as stable as possible.\n> #' @param Conjunction of packages to check\n> #' @keywords packages installation\n> #' @export\n> dependencies <- function(dep){\n+   for (i in dep){\n+     if (i %in% installed.packages()){\n+       library(i, character.only=TRUE)\n+     } else {\n+       install.packages(i)\n+       library(i, character.only=TRUE)\n+     }\n+   }\n+ }\n> \n> dependencies(c(\"data.table\", \"docopt\"))\ndata.table 1.10.4\n  The fastest way to learn (by data.table authors): https://www.datacamp.com/courses/data-analysis-the-data-table-way\n  Documentation: ?data.table, example(data.table) and browseVignettes(\"data.table\")\n  Release notes, videos and slides: http://r-datatable.com\n> \n> opts <- docopt(doc)\n> \n> # This is a workaround that makes the script find itself in the file\n> # system\n> system(\"pwd=`pwd`; $pwd 2> dummyfile.txt\")\n> dir <- fread(\"dummyfile.txt\")\n> n<- colnames(dir)[2]\n> n2 <- substr(n, 1, nchar(n)-1)\n> setwd(n2)\n> \n> # Utility to get users input\n> userInput<-function(question) {\n+   n = 0\n+   cat(question, \" \")\n+   n<- readLines(con=\"stdin\", 1)\n+   return(as.numeric(n))\n+ }\n> \n> # Quick insertion of investiments via command line\n> if (isTRUE(opts$lr & opts$hr)){\n+ \u0007data<-read.csv(\"./finances.csv\",stringsAsFactors = FALSE)\n+   \u0007lastentry<-tail(data, n=1)\n+ \n+     expenses = lastentry$expenses\n+     investPercent = lastentry$investPercent\n+ \n+  \u0007\r<e=as.character(Sys.Date()),lastentry$investPercent,\n+  \u0007\u0007lastentry$expenses, lastentry$savings, low= lastentry$low+opts$low,\n+  \u0007\u0007high=lastentry$high+opts$high, lastentry$objective)\n+   \u0007data<-rbind(data,dataplus)\n+ \u0007write.csv(data,  file=\"./finances.csv\", row.names = F)\n+ \u0007cat(\"Your new investiments were recorded\")\n+ \u0007exit()\n+ } else{\n+ \u0007if(isTRUE(opts$low | opts$high)){\n+ \u0007\u0007\r<igh investiments if you want them to be recorded.\")\n+ \u0007\u0007exit()\n+ \u0007}\n+ }\n> isTRUE(opts$low | opts$high)\n[1] FALSE\n> if(isTRUE(opts$low) | isTRUE(opts$high)){\n+ \r<igh investiments if you want them to be recorded.\")\n+ \u0007\u0007exit()\n+ \u0007}\n> str(opts)\nList of 6\n $ --help: logi FALSE\n $ --low : NULL\n $ --high: NULL\n $ help  : logi FALSE\n $ low   : NULL\n $ high  : NULL\n - attr(*, \"class\")= chr [1:2] \"docopt\" \"list\"\n> ",
-			"settings":
-			{
-				"buffer_size": 3815,
-				"line_ending": "Unix",
-				"name": "*REPL* [r]",
-				"read_only": true,
-				"scratch": true
 			}
 		}
 	],
@@ -137,10 +126,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "lint",
+		"height": 283.0,
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"nex",
+				"SublimeLinter: Next Error"
+			],
 			[
 				"lint",
 				"SublimeLinter: Lint This View"
@@ -606,6 +599,9 @@
 	],
 	"file_history":
 	[
+		"/home/luis/Dropbox/Documentos/Coding/R/allocator/LICENSE",
+		"/home/luis/Dropbox/Documentos/Coding/R/sempsychiatry/LICENSE",
+		"/home/luis/Dropbox/Documentos/Coding/R/allocator/finances.csv",
 		"/home/luis/Dropbox/Documentos/Coding/R/allocator/teste.R",
 		"/home/luis/Dropbox/Documentos/Coding/R/finances/dummyfile.txt",
 		"/home/luis/Dropbox/Documentos/Coding/R/finances/allocator.R",
@@ -730,18 +726,15 @@
 		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/Citer.sublime-settings",
 		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/Evernote/Evernote.sublime-settings",
 		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/Evernote.sublime-settings",
-		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/CiteBibtex/CiteBibtex.sublime-settings",
-		"/C/Users/554UU-lfernado/Dropbox/Documentos/Shared between Jacyra-Luis/Pandoquer/source/library.bib",
-		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/User/distraction_free_window.sublime-settings",
-		"/home/luis/Downloads/Telegram Desktop/thesis.md"
+		"/C/Users/554UU-lfernado/Dropbox/PortableApps/SublimeText3/Data/Packages/CiteBibtex/CiteBibtex.sublime-settings"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
-		"height": 88.0,
+		"height": 101.0,
 		"where_history":
 		[
 			""
@@ -752,6 +745,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"investL",
+			"investH",
+			"aimL",
+			"aimH",
+			"highToday",
+			"lowToday",
+			"investedHigh",
+			"investedLow",
+			"newUserCalc",
+			"lowObjective",
+			"investPercent",
+			"userInput",
 			"str(",
 			"investLow",
 			"investHigh",
@@ -867,19 +872,7 @@
 			"Figure 2",
 			"table 1",
 			"Jung",
-			"{@sec",
-			"variance",
-			"\"reu",
-			"We",
-			"we",
-			"Economist",
-			"communic",
-			"an attem",
-			"This proj",
-			"Figure",
-			"121",
-			"Table",
-			"table"
+			"{@sec"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -887,6 +880,18 @@
 		"regex": false,
 		"replace_history":
 		[
+			"investlow",
+			"investhigh",
+			"aimlow",
+			"aimhigh",
+			"hightoday",
+			"lowtoday",
+			"investedhigh",
+			"investedlow",
+			"newusercalc",
+			"lowobjective",
+			"investpercent",
+			"userinput",
 			"profitHigh",
 			"profitLow",
 			"QQ-plot",
@@ -910,7 +915,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -919,15 +924,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7217,
+						"buffer_size": 7587,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1859,
-								1859
+								1226,
+								21
 							]
 						],
 						"settings":
@@ -949,14 +954,43 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1224.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "readme.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1807,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1003,
+								1003
+							]
+						],
+						"settings":
+						{
+							"auto_name": "# Allocator v0.9.1",
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 2,
 					"file": ".gitignore",
 					"semi_transient": true,
 					"settings":
@@ -980,208 +1014,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1106,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										186,
-										195
-									],
-									[
-										313,
-										322
-									],
-									[
-										520,
-										529
-									],
-									[
-										644,
-										653
-									],
-									[
-										775,
-										784
-									],
-									[
-										863,
-										872
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ \t].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "finances.csv",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 293,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 2,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
-				{
-					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3815,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2783,
-								2783
-							]
-						],
-						"settings":
-						{
-							"auto_complete": true,
-							"auto_indent": false,
-							"detect_indentation": false,
-							"gutter": false,
-							"history_arrows": true,
-							"indent_subsequent_lines": false,
-							"line_numbers": false,
-							"repl": true,
-							"repl_external_id": "r",
-							"repl_id": "84eec876ed9b48f9a45b21e4d2deff1a",
-							"repl_restart_args":
-							{
-								"additional_scopes":
-								[
-									"tex.latex.knitr"
-								],
-								"cmd":
-								{
-									"linux":
-									[
-										"R",
-										"--interactive",
-										"--no-readline"
-									],
-									"osx":
-									[
-										"R",
-										"--interactive",
-										"--no-readline"
-									],
-									"windows":
-									[
-										"Rterm.exe",
-										"--ess",
-										"--encoding=$win_cmd_encoding"
-									]
-								},
-								"cmd_postfix": "\n",
-								"cwd": "$file_path",
-								"encoding":
-								{
-									"linux": "utf8",
-									"osx": "utf8",
-									"windows": "$win_cmd_encoding"
-								},
-								"extend_env":
-								{
-									"linux":
-									{
-										"PATH": "{PATH}:/usr/local/bin"
-									},
-									"osx":
-									{
-										"PATH": "{PATH}:/usr/local/bin"
-									},
-									"windows":
-									{
-									}
-								},
-								"external_id": "r",
-								"soft_quit": "\nquit(save=\"no\")\n",
-								"suppress_echo":
-								{
-									"linux": true,
-									"osx": true,
-									"windows": false
-								},
-								"syntax": "Packages/R/R Console.tmLanguage",
-								"type": "subprocess"
-							},
-							"repl_sublime2": false,
-							"smart_indent": false,
-							"spell_check": false,
-							"syntax": "Packages/R/R Console.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1939.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -1204,18 +1037,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.623333333333,
 			1.0
 		],
 		"rows":
@@ -1245,7 +1071,7 @@
 	"project": "allocator.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1260,9 +1086,13 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "fina",
+		"last_filter": "blog",
 		"selected_items":
 		[
+			[
+				"blog",
+				"~/Documentos/lf-araujo.github.io/blog.sublime-project"
+			],
 			[
 				"fina",
 				"~/Dropbox/Documentos/Shared-w-Jacyra/final-seminar.sublime-workspace"
@@ -1290,10 +1120,6 @@
 			[
 				"re",
 				"/media/budgie-remix/887A3EFA7A3EE49A/Users/554UU-lfernado/Dropbox/Documentos/Psiquiatria/Projetos em andamento/ARTIGO neuroimagem estrutural QI moderation/outputreview/answer-review.sublime-workspace"
-			],
-			[
-				"blog",
-				"~/Documentos/lf-araujo.github.io/blog.sublime-project"
 			],
 			[
 				"migh",
@@ -1325,12 +1151,6 @@
 				0,
 				0,
 				1,
-				1
-			],
-			[
-				1,
-				0,
-				2,
 				1
 			]
 		]
