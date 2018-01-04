@@ -38,26 +38,26 @@ options:
 #' packages can cause incompatibilities over time, as statistical packages 
 #' are quickly updated by their owners. This approach makes sure to maintain 
 #' the base installation as stable as possible.
-#' @param Conjunction of packages to check
+#' @param List of packages
 #' @keywords packages installation
 #' @export
+
+cat("\n Welcome! I will first try to install dependencies for this tool. \n")
+
 dependencies <- function(dep){
-  for (i in dep){
-    pb = txtProgressBar(min = 0, max = length(dep), style = 3)
-    cat("\n Welcome! I will first try to install dependencies for this tool. \n")
-    if (i %in% installed.packages()){
-      library(i, character.only = TRUE)
-      setTxtProgressBar(pb, i)
-    } else {
-      install.packages(i, repos="http://cran.rstudio.com/", dependencies = T)
-      library(i, character.only = TRUE)
-      setTxtProgressBar(pb, i)
+  pb <- txtProgressBar(min = 0, max = length(dep)-1, style = 3)
+  for (i in seq_along(dep)){
+    if (!dep[i] %in% installed.packages()){
+      install.packages(dep[i], repos = "http://cran.rstudio.com/",
+        dependencies = T)
     }
+    library(dep[i], character.only = TRUE)
+    setTxtProgressBar(pb, i / length(dep))
   }
+  close(pb)
 }
 
 dependencies(c("data.table", "docopt"))
-
 opts <- docopt(doc)
 
 # This is a workaround that makes the script find itself in the file
@@ -68,16 +68,22 @@ n <- colnames(dir)[3]
 n2 <- substr(n, 1, nchar(n) - 1)
 setwd(n2)
 
+# Utility to get users input
+userinput <- function(question) {
+  cat(question, "\n> ")
+  n <- readLines(con = "stdin", 1)
+  return(as.numeric(n))
+}
 
 # Quick insertion of investiments via command line
 if (!is.null(opts$low)){
-  data <-read.csv("./finances.csv", stringsAsFactors = FALSE)
+  data <- read.csv("./finances.csv", stringsAsFactors = FALSE)
   lastentry <- tail(data, n = 1)
 
   expenses <- lastentry$expenses
   investpercent <- lastentry$investpercent
 
-  dataplus <-data.frame(date = as.character(Sys.Date()),
+  dataplus <- data.frame(date = as.character(Sys.Date()),
                                 investpercent = lastentry$investpercent,
                                 expenses = lastentry$expenses,
                                 savings = lastentry$savings,
@@ -85,7 +91,7 @@ if (!is.null(opts$low)){
                                 high = lastentry$high + as.numeric(opts$high),
                                 objective = lastentry$objective)
 
-  data <-rbind(data, dataplus)
+  data <- rbind(data, dataplus)
   write.csv(data,  file = "./finances.csv", row.names = F)
   cat("Your new investiments were recorded. Goodbye!")
   exit()
@@ -100,14 +106,14 @@ newusercalc <- function(investpercent, expenses, savings, low, high, invest) {
 
   if (expenses > savings){
     cat("You haven't reached the first step of creating the emergency pool.
-      Deposit " , invest, "into your savings acount  and keep doing it
-      until it reaches ", expenses)
+      Deposit ", invest, "into your savings acount and keep doing it
+      until it reaches ", expenses, "\n Good luck! \n")
   } else{
-    cat("Deposit ", lowobjective, "into your low risk investiment pool" )
-    cat("Deposit ", highobjective, "into your high risk investiment pool")
+    cat("Deposit ", lowobjective, "into your low risk investiment pool. \n" )
+    cat("Deposit ", highobjective, "into your high risk investiment pool. \n")
     cat("Your data has been saved to finances.csv in this directory. Goodbye!
       \n")
-    write.csv(data.frame(date = Sys.Date(), investpercent, expenses, savings, 
+    write.csv(data.frame(date = Sys.Date(), investpercent, expenses, savings,
               low, high, objective ), row.names = F, file = "./finances.csv")
   }
 }
@@ -117,41 +123,42 @@ newusercalc <- function(investpercent, expenses, savings, low, high, invest) {
 destfile <- "./finances.csv"
 if (!file.exists(destfile)){
 
-  age <-userinput("Enter your age: ")
-  end <-userinput("In which age you want to stop managing finances: ")
-  profile <-userinput("What is your risk profile: low risk (type 40), medium
-    risk (type 20), high risk (type 0). Intermediary values are accepted: ")
-  expenses <-userinput("Enter your current 6 months expenses: ")
-  savings <-userinput("Enter your current savings account status: ")
-  low <-userinput("Enter your low risk investiments total: ")
-  high <-userinput("Enter your high risk investiments total: ")
-  invest <-userinput("Finally, how much you have to save today: ")
+  userinput("Enter your age: ") -> age
+  userinput("In which age you want to stop managing finances: ") -> end
+  userinput("What is your risk profile: low risk (type 40), medium
+    risk (type 20), high risk (type 0). Intermediary values are accepted: ") ->
+    profile
+  userinput("Enter your current 6 months expenses: ") -> expenses
+  userinput("Enter your current savings account status: ") -> savings
+  userinput("Enter your low risk investiments total: ") -> low
+  userinput("Enter your high risk investiments total: ") -> high
+  userinput("Finally, how much you have to save today: ") -> invest
 
   newusercalc( (end - profile) - age, expenses, savings, low, high, invest)
 
 } else  {
 
-  data <-read.csv("./finances.csv", stringsAsFactors = FALSE)
-  lastentry <-tail(data, n = 1)
+  data <- read.csv(destfile, stringsAsFactors = FALSE)
+  lastentry <- tail(data, n = 1)
 
   # Finds the first time last investpercent happened, so to allow calculation
   # of time
   t.first <- data[match(lastentry$investpercent, data$investpercent), ]
 
   if ( (Sys.Date() - as.Date(t.first$date, format = "%Y-%m-%d")) > 365) {
-    expenses <-userinput("Time to update 6 month expenses: ")
+    userinput("Time to update 6 month expenses: ") -> expenses
     investpercent = lastentry$investpercent - 1
   } else {
     expenses = lastentry$expenses
     investpercent = lastentry$investpercent
   }
 
-  investedlow <- userinput("Invested value in low risk since last time: ")
-  investedhigh <- userinput("Invested value in high risk since last time: ")
-  lowtoday <- userinput("Total low risk value today: ")
-  hightoday <- userinput("Total high risk value today: ")
-  savings <-userinput("Enter your current savings account status: ")
-  invest <-userinput("Finally, how much you have to save today: ")
+  userinput("Invested value in low risk since last time: ") -> investedlow
+  userinput("Invested value in high risk since last time: ") -> investedhigh
+  userinput("Total low risk value today: ") -> lowtoday
+  userinput("Total high risk value today: ") -> hightoday
+  userinput("Enter your current savings account status: ") -> savings
+  userinput("Finally, how much you have to save today: ") -> invest
 
   aimhigh = (lowtoday + hightoday) * investpercent / 100
   aimlow = (lowtoday + hightoday) * (100 - investpercent) / 100
@@ -186,6 +193,6 @@ if (!file.exists(destfile)){
                         expenses, savings, low = lowtoday, high = hightoday,
                         objective)
   data <-rbind(data, dataplus)
-  write.csv(data,  file="./finances.csv", row.names = F)
+  write.csv(data,  file = destfile, row.names = F)
   cat("Your data has been saved to finances.csv in this directory. Goodbye!\n")
 }
