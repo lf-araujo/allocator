@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] First run takes long to install dependencies, needs a progress bar (utils.R?)
+- [X] First run takes long to install dependencies, needs a progress bar (utils.R?)
 - [ ] Rebalance between pools in case user enters zero as amount to invest
 - [ ] How to handle translations in R?
 - [ ] Add examples to this readme file
