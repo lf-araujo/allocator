@@ -43,11 +43,15 @@ options:
 #' @export
 dependencies <- function(dep){
   for (i in dep){
+    pb = txtProgressBar(min = 0, max = length(dep), style = 3)
+    cat("\n Welcome! I will first try to install dependencies for this tool. \n")
     if (i %in% installed.packages()){
       library(i, character.only = TRUE)
+      setTxtProgressBar(pb, i)
     } else {
-      install.packages(i)
+      install.packages(i, repos="http://cran.rstudio.com/", dependencies = T)
       library(i, character.only = TRUE)
+      setTxtProgressBar(pb, i)
     }
   }
 }
@@ -64,13 +68,6 @@ n <- colnames(dir)[3]
 n2 <- substr(n, 1, nchar(n) - 1)
 setwd(n2)
 
-# Utility to get users input
-userinput <-function(question) {
-  n = 0
-  cat(question, "\n> ")
-  n <- readLines(con = "stdin", 1)
-  return(as.numeric(n))
-}
 
 # Quick insertion of investiments via command line
 if (!is.null(opts$low)){
