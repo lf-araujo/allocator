@@ -45,28 +45,22 @@ options:
 cat("\n Welcome! I will first try to install dependencies for this tool. \n")
 
 dependencies <- function(dep){
-  pb <- txtProgressBar(min = 0, max = length(dep)-1, style = 3)
+  pb <- txtProgressBar(min = 0, max = length(dep), style = 3)
   for (i in seq_along(dep)){
     if (!dep[i] %in% installed.packages()){
       install.packages(dep[i], repos = "http://cran.rstudio.com/",
         dependencies = T)
     }
     library(dep[i], character.only = TRUE)
-    setTxtProgressBar(pb, i / length(dep))
+    setTxtProgressBar(pb, i )
   }
   close(pb)
 }
 
-dependencies(c("data.table", "docopt"))
+dependencies(c("data.table", "docopt", "here"))
 opts <- docopt(doc)
 
-# This is a workaround that makes the script find itself in the file
-# system
-system("pwd=`pwd`; $pwd 2> .dummyfile.txt")
-dir <- fread(".dummyfile.txt")
-n <- colnames(dir)[3]
-n2 <- substr(n, 1, nchar(n) - 1)
-setwd(n2)
+setwd(here())
 
 # Utility to get users input
 userinput <- function(question) {
