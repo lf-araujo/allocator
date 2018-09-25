@@ -11,7 +11,7 @@ Passive allocation investment tool. It departs from three assumptions:
   3.2. the second pool corresponds to low risk investments
   3.3. the third pool are the high risk investments.
 
-  Vary the types of investments within each pool, this tool will not handle
+  Try to vary the types of investments within each pool, this tool will not handle
   investments within pool, only the total pool value. Decision on what is low
   and high risk, as well as decision on the risk profile is entirely on users
   discretion. Every year, the tool will help the user allocate the correct
@@ -22,9 +22,11 @@ Passive allocation investment tool. It departs from three assumptions:
 
 usage:
  allocator.R [(quick-add <low> <high>)]
+ allocator.R --plot
 
 options:
  -h --help         Shows this screen
+ -p --plot         Plot a graph
 
 " -> doc
 
@@ -57,6 +59,7 @@ dependencies <- function(dep){
   close(pb)
 }
 
+
 dependencies(c("data.table", "docopt", "here"))
 opts <- docopt(doc)
 
@@ -69,9 +72,23 @@ userinput <- function(question) {
   return(as.numeric(n))
 }
 
+destfile <- "./finances.csv"
+
+# Plotting
+
+if (opts$plot){
+  png()
+  data <- read.csv(destfile, stringsAsFactors = FALSE)
+  plot(type="l",as.Date(data$date, format = "%Y-%m-%d"),data$low,col="red")
+  lines(as.Date(data$date, format = "%Y-%m-%d"),data$high,col="green")
+  dev.off()
+  exit()
+}
+
+
 # Quick insertion of investiments via command line
 if (!is.null(opts$low)){
-  data <- read.csv("./finances.csv", stringsAsFactors = FALSE)
+  data <- read.csv(destfile, stringsAsFactors = FALSE)
   lastentry <- tail(data, n = 1)
 
   expenses <- lastentry$expenses
@@ -85,8 +102,9 @@ if (!is.null(opts$low)){
                                 high = lastentry$high + as.numeric(opts$high),
                                 objective = lastentry$objective)
 
+
   data <- rbind(data, dataplus)
-  write.csv(data,  file = "./finances.csv", row.names = F)
+  write.csv(data,  file = destfile, row.names = F)
   cat("Your new investiments were recorded. Goodbye!")
   exit()
 }
@@ -114,7 +132,6 @@ newusercalc <- function(investpercent, expenses, savings, low, high, invest) {
 
 # This is the main routine and algorithm specification
 # Check if data file exists, this will be the criteria for considering first run
-destfile <- "./finances.csv"
 if (!file.exists(destfile)){
 
   userinput("Enter your age: ") -> age
@@ -176,7 +193,6 @@ if (!file.exists(destfile)){
 
   investhigh =  (aimhigh / (aimhigh + aimlow)) * invest
   investlow = (aimlow / (aimhigh + aimlow)) * invest
-
   objective = abs(expenses - ( (lowtoday + hightoday) - (investedlow +
     investedhigh) - (lastentry$low + lastentry$high)))
 
