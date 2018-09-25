@@ -11,7 +11,7 @@ Passive allocation investment tool. It departs from three assumptions:
   3.2. the second pool corresponds to low risk investments
   3.3. the third pool are the high risk investments.
 
-  Try to vary the types of investments within each pool, this tool will not handle
+  Try to vary the types of investment within each pool, this tool will not handle
   investments within pool, only the total pool value. Decision on what is low
   and high risk, as well as decision on the risk profile is entirely on users
   discretion. Every year, the tool will help the user allocate the correct
