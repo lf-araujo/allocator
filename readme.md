@@ -1,9 +1,6 @@
-# TODO
+# Not maintained anymore
 
-- [X] First run takes long to install dependencies, needs a progress bar (utils.R?)
-- [ ] Rebalance between pools in case user enters zero as amount to invest
-- [ ] How to handle translations in R?
-- [ ] Add examples to this readme file
+Have a look at the [Swift](https://github.com/lf-araujo/allocator.swift/) version.
 
 # Allocator v0.9.1
 
